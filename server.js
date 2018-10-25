@@ -8,22 +8,17 @@ var app = express();
 hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
 
-app.use((req, res, next) => {  //middleware
+app.use((req, res, next) => {
   var now = new Date().toString();
   var log = `${now}: ${req.method} ${req.url}`;
 
   console.log(log);
-  fs.appendFile('server.log', log + '\n', (err) =>{
-      if (err){
-          console.log("Erro ao escrever no fich");
-      }
-  });
+  fs.appendFile('server.log', log + '\n');
   next();
 });
 
-// app.use((req, res, next) => {  //sobrepoe aos get e post
+// app.use((req, res, next) => {
 //   res.render('maintenance.hbs');
-//   //como n chamamos next ent o render para
 // });
 
 app.use(express.static(__dirname + '/public'));
@@ -39,13 +34,19 @@ hbs.registerHelper('screamIt', (text) => {
 app.get('/', (req, res) => {
   res.render('home.hbs', {
     pageTitle: 'Home Page',
-    welcomeMessage: 'Welcome to my websiteeeee'
+    welcomeMessage: 'Welcome to my website'
   });
 });
 
 app.get('/about', (req, res) => {
   res.render('about.hbs', {
     pageTitle: 'About Page'
+  });
+});
+
+app.get('/projects', (req, res) => {
+  res.render('projects.hbs', {
+    pageTitle: 'Projects'
   });
 });
 
@@ -56,9 +57,10 @@ app.get('/bad', (req, res) => {
   });
 });
 
-app.listen(port, () => {  //change env var to heroku
+app.listen(port, () => {
   console.log(`Server is up on port ${port}`);
 });
+
 
 
 // const express = require('express');
